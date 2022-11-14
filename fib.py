@@ -4,6 +4,21 @@ from pathlib import Path
 path = Path(__file__).parent
 get_cwd(path)
 
+def get_arg_list(*args, **kwargs):
+    """[summary: get list of args and kwargs]
+
+    Returns:
+        [type: list]: [description, list of args and kwargs]
+    """
+    arg_lst = []
+    if args:
+        arg_lst.append(', '.join(repr(arg) for arg in args))
+    if kwargs:
+        pairs = ['%s=%r' % (k, w) for k, w in sorted(kwargs.items())]
+        arg_lst.append(', '.join(pairs))
+    arg_str = ', '.join(arg_lst)
+    return arg_str
+
 # def calculateFibonacci(n):
 #     memoize = [-1 for x in range(n+1)]
 #     return calculateFibonacciRecur(memoize, n)
