@@ -159,3 +159,27 @@ if __name__ == '__main__':
 #     statprof.stop()
 #     statprof.display()
 
+
+class BenchMark:
+    def __init__(self, func):
+        self.func = func
+    def __call__(self, *args, **kwargs):
+        import datetime
+        self.start_time = datetime.datetime.now()
+        print('Start Time is: ', self.start_time)
+        try:
+            self.func(*args, **kwargs)
+        finally:
+            end_time = datetime.datetime.now()
+            total_time = end_time - self.start_time
+            print('End Time is: ', end_time)
+            signature = get_arg_list(*args, **kwargs)
+            print(f"The Turnaround Time of {self.func.__name__}({signature}) is {total_time}")
+
+
+class cProf(BenchMark):
+    def __call__(self, *args, **kwargs):
+        import cProfile
+        with cProfile.Profile() as pr:
+            BenchMark.__call__(self, *args, **kwargs)
+        pr.print_stats()
